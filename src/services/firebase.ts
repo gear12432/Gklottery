@@ -3,19 +3,37 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-
-export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
-
-async function testConnection() {
-  try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn('Firebase offline check: Please check internet connection or Firebase configuration.');
-    }
-  }
+let app;
+try {
+  app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+} catch (e) {
+  console.warn('Firebase init fallback:', e);
+  app = getApp();
 }
 
-testConnection();
+export const auth = getAuth(app);
+
+let firestoreDb;
+try {
+  if (firebaseConfig.firestoreDatabaseId) {
+    firestoreDb = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  } else {
+    firestoreDb = getFirestore(app);
+  }
+} catch (e) {
+  console.warn('Firestore init fallback:', e);
+  firestoreDb = getFirestore(app);
+}
+
+export const db = firestoreDb;
+
+// Non-blocking connection test
+setTimeout(() => {
+  try {
+    getDocFromServer(doc(db, 'test', 'connection')).catch((err) => {
+      console.warn('Firebase connection status:', err?.message || err);
+    });
+  } catch (err) {
+    console.warn('Firebase test connection caught:', err);
+  }
+}, 1000);
