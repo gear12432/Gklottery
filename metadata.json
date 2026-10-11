@@ -1,0 +1,6 @@
+{
+  "name": "Kerala Lottery Live",
+  "description": "Official Live Kerala Lottery Results, Daily Lucky Draws, Check-In Rewards, VIP Tickets, and Wallet Management Portal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

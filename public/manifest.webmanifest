@@ -1,0 +1,16 @@
+{
+  "name": "Kerala Lottery Live",
+  "short_name": "KeralaLottery",
+  "description": "Live Kerala Lottery Results and VIP Ticket Portal",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#EEF2F3",
+  "theme_color": "#F36B16",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

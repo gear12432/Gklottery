@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "createdAt": { "type": "string" },
+        "profileUpdatedAt": { "type": "string" },
+        "balance": { "type": "number" },
+        "vipLevel": { "type": "string" },
+        "vipStatus": { "type": "string" },
+        "phoneNumber": { "type": "string", "maxLength": 20 }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "UserPreferences": {
+      "title": "UserPreferences",
+      "description": "User settings and preferences",
+      "type": "object",
+      "properties": {
+        "language": { "type": "string" },
+        "notificationsEnabled": { "type": "boolean" },
+        "soundEnabled": { "type": "boolean" }
+      }
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "User notification item",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 120 },
+        "message": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string" },
+        "read": { "type": "boolean" },
+        "type": { "type": "string" }
+      },
+      "required": ["title", "message", "createdAt", "read"]
+    },
+    "CheckIn": {
+      "title": "CheckIn",
+      "description": "Daily check-in record",
+      "type": "object",
+      "properties": {
+        "createdAt": { "type": "string" },
+        "status": { "type": "string" },
+        "dayNumber": { "type": "number" },
+        "rewardAmount": { "type": "number" }
+      },
+      "required": ["createdAt", "status"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial and reward transaction history",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "referenceId": { "type": "string", "maxLength": 64 },
+        "paymentMethod": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["type", "amount", "status", "createdAt", "referenceId"]
+    },
+    "Ticket": {
+      "title": "Ticket",
+      "description": "Purchased or claimed lottery tickets",
+      "type": "object",
+      "properties": {
+        "drawId": { "type": "string" },
+        "lotteryName": { "type": "string" },
+        "ticketNumber": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "status": { "type": "string" },
+        "price": { "type": "number" },
+        "drawDate": { "type": "string" },
+        "potentialPrize": { "type": "string" }
+      },
+      "required": ["drawId", "lotteryName", "ticketNumber", "createdAt", "status"]
+    },
+    "SupportTicket": {
+      "title": "SupportTicket",
+      "description": "User support query",
+      "type": "object",
+      "properties": {
+        "subject": { "type": "string", "maxLength": 150 },
+        "category": { "type": "string" },
+        "message": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string" },
+        "status": { "type": "string" },
+        "userEmail": { "type": "string" }
+      },
+      "required": ["subject", "message", "createdAt", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Main user document"
+    },
+    "/userPreferences/{userId}": {
+      "schema": { "$ref": "#/entities/UserPreferences" },
+      "description": "User settings"
+    },
+    "/notifications/{userId}/items/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User notification collection"
+    },
+    "/checkIns/{userId}/history/{dateKey}": {
+      "schema": { "$ref": "#/entities/CheckIn" },
+      "description": "User check-in records"
+    },
+    "/transactions/{userId}/history/{transactionId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "User transactions"
+    },
+    "/tickets/{userId}/history/{ticketId}": {
+      "schema": { "$ref": "#/entities/Ticket" },
+      "description": "User tickets"
+    },
+    "/supportTickets/{userId}/history/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "User support inquiries"
+    }
+  }
+}
